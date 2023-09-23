@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import { TokenModel } from '../models/token-model.js';
+import { tokenModel } from '../models/tokenModel.js';
 
 class TokenService {
     generateTokens(payload) {
@@ -33,24 +33,21 @@ class TokenService {
     }
 
     async saveToken(userId, refreshToken) {
-        const tokenData = await TokenModel.findOne({ user: userId });
+        const tokenData = await tokenModel.findOne({ user: userId });
         if (tokenData) {
             tokenData.refreshToken = refreshToken;
             return tokenData.save();
         }
 
-        const token = await TokenModel.create({ user: userId, refreshToken });
-        return token;
+        return tokenModel.create({ user: userId, refreshToken });
     }
 
     async removeToken(refreshToken) {
-        const logoutInfo = await TokenModel.deleteOne({ refreshToken });
-        return logoutInfo;
+        return tokenModel.deleteOne({ refreshToken });
     }
 
     async findRefreshToken(refreshToken) {
-        const tokenData = await TokenModel.findOne({ refreshToken });
-        return tokenData;
+        return tokenModel.findOne({ refreshToken });
     }
 }
 

@@ -1,7 +1,8 @@
 import { validationResult } from 'express-validator';
-import { userService } from '../services/user-service.js';
-import { ApiError } from '../exceptions/api-error.js';
+import { userService } from '../services/user.service.js';
+import { ApiError } from '../exceptions/apiError.js';
 import { setRefreshTokenInCookie } from '../utils/helpers/setRefreshTokenInCookie.js';
+import { makeAuthResponse } from '../utils/helpers/makeAuthResponse.js';
 
 class UserController {
     async registration(req, res, next) {
@@ -16,7 +17,7 @@ class UserController {
 
             setRefreshTokenInCookie(res, userData.tokens.refreshToken);
 
-            return res.json(userData);
+            return res.json(makeAuthResponse(userData));
         } catch (e) {
             next(e);
         }
@@ -29,7 +30,7 @@ class UserController {
 
             setRefreshTokenInCookie(res, userData.tokens.refreshToken);
 
-            return res.json(userData);
+            return res.json(makeAuthResponse(userData));
         } catch (e) {
             next(e);
         }
@@ -51,12 +52,11 @@ class UserController {
     async refresh(req, res, next) {
         try {
             const { refreshToken } = req.cookies;
-
             const userData = await userService.refresh(refreshToken);
 
             setRefreshTokenInCookie(res, userData.tokens.refreshToken);
 
-            return res.json(userData);
+            return res.json(makeAuthResponse(userData));
         } catch (e) {
             next(e);
         }

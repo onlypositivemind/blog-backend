@@ -6,10 +6,6 @@ const UserSchema = new Schema({
     username: { type: String, unique: true, required: true },
     password: { type: String, required: true },
     role: { type: String, default: USER_ROLE_USER },
-    firstName: { type: String },
-    lastName: { type: String },
-    avatar: { type: String },
-    country: { type: String },
 });
 
-export const UserModel = model('User', UserSchema);
+export const userModel = model('User', UserSchema);

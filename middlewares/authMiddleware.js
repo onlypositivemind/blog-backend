@@ -1,5 +1,5 @@
-import { ApiError } from '../exceptions/api-error.js';
-import { tokenService } from '../services/token-service.js';
+import { ApiError } from '../exceptions/apiError.js';
+import { tokenService } from '../services/token.service.js';
 
 export const authMiddleware = (req, res, next) => {
     if (req.method === 'OPTIONS') {
